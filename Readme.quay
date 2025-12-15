@@ -1,8 +1,7 @@
  docker build -t  physicell/pcstudio .
  docker tag physicell/pcstudio quay.io/physicell/pcstudio:0.1
- docker tag physicell/pcstudio quay.io/physicell/pcstudio:0.2
- docker tag physicell/pcstudio quay.io/physicell/pcstudio:0.3
- docker tag physicell/pcstudio quay.io/physicell/pcstudio:0.4
+...
+ docker tag physicell/pcstudio quay.io/physicell/pcstudio:0.5
 - should I NOT do "latest"??
  docker tag physicell/pcstudio quay.io/physicell/pcstudio:latest
 ... whatever tag is latest
@@ -10,13 +9,10 @@
 
  optionally, test it locally:
  docker run --rm -p 5800:5800 -p 5900:5900 physicell/pcstudio
- docker run --rm -p 5800:5800 -p 5900:5900 quay.io/physicell/pcstudio:0.4
+ docker run --rm -p 5800:5800 -p 5900:5900 quay.io/physicell/pcstudio:0.5
  then: http://localhost:5800/
 
- docker push quay.io/physicell/pcstudio:0.1
- docker push quay.io/physicell/pcstudio:0.2
- docker push quay.io/physicell/pcstudio:0.3
- docker push quay.io/physicell/pcstudio:0.4
+ docker push quay.io/physicell/pcstudio:0.5
 ?? docker push quay.io/physicell/pcstudio:latest
 
 confirm updated:
