@@ -142,7 +142,7 @@ class GalaxyHistoryWindow(QWidget):
         except:
             print("Unable to get the file from History")
             msgBox = QMessageBox()
-            msgBox.setText(f'Unable to get file with History ID {self.file_id}. Perhaps you got it previously.')
+            msgBox.setText(f'get_file_cb: Unable to get file with History ID {self.file_id}. Perhaps you got it previously.')
             msgBox.setStandardButtons(QMessageBox.Ok)
             returnValue = msgBox.exec()
 
@@ -240,6 +240,8 @@ class LoadProjectWindow(QWidget):
 
     def get_project_cb(self,sval):
         self.file_id = int(self.file_id_w.text())
+        zip_file = "project.zip"
+        msgBox = QMessageBox()
         try:
             msgBox = QMessageBox()
             msgBox.setText(f'Copying the requested data from the Galaxy History')
@@ -251,12 +253,28 @@ class LoadProjectWindow(QWidget):
             # print("dummy get")
             # os.chdir("config")
             # os.chdir("..")
-            with zipfile.ZipFile("project.zip", 'r') as zip_ref:
-                zip_ref.extractall("config")
-        except:
-            print("There was a problem getting or unzipping the file")
-            msgBox = QMessageBox()
-            msgBox.setText(f'There was a problem getting or unzipping file with History ID {self.file_id}. Perhaps you got it previously.')
+            with zipfile.ZipFile(zip_file, 'r') as zip_ref:
+                zip_ref.extractall(path="config")
+                # print("Successful zip extractall")
+                msgBox.setText(f'Successful extractall into /config')
+                msgBox.setStandardButtons(QMessageBox.Ok)
+                returnValue = msgBox.exec()
+        except FileNotFoundError:
+            msg = f"Error: The file {zip_file} was not found."
+            print(msg)
+            msgBox.setText(msg)
+            msgBox.setStandardButtons(QMessageBox.Ok)
+            returnValue = msgBox.exec()
+        except zipfile.BadZipFile:
+            msg = f"Error: The file {zip_file} is not a valid or supported zip file."
+            print(msg)
+            msgBox.setText(msg)
+            msgBox.setStandardButtons(QMessageBox.Ok)
+            returnValue = msgBox.exec()
+        except Exception as e:
+            msg = f'get_project_cb(): There was a problem getting or unzipping file with History ID {self.file_id}. Perhaps you got it previously.'
+            print(msg)
+            msgBox.setText(msg)
             msgBox.setStandardButtons(QMessageBox.Ok)
             returnValue = msgBox.exec()
 
