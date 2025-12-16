@@ -1527,7 +1527,13 @@ PhysiCell Studio is provided "AS IS" without warranty of any kind. &nbsp; In no 
         #     put( args.filepath, file_type=args.filetype, history_id=args.history_id )
         # fname = "/opt/pcstudio/config/PhysiCell_settings.xml"
         fname = self.current_xml_file 
-        self.show_info_message("This will start a job that copies your current model's config file to the Galaxy History. You can download it from there once it completes.")
+        msgBox = QMessageBox()
+        msgBox.setText("This will start a job that copies your current model's config file to the Galaxy History. You can download it from there once it completes.")
+        msgBox.setIcon(QMessageBox.Information)
+        msgBox.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+        returnValue = msgBox.exec()
+        if returnValue == QMessageBox.Cancel:
+            return
         try:
             put(fname)
             # print("dummy put...")
@@ -1537,7 +1543,13 @@ PhysiCell Studio is provided "AS IS" without warranty of any kind. &nbsp; In no 
 
     def download_zipped_csv_galaxy_cb(self):
         # fname = "/opt/pcstudio/all_csv.zip"
-        self.show_info_message("This will start a job that copies a zip file of all output/*.csv to the Galaxy History. You can download it from there once it completes.")
+        msgBox = QMessageBox()
+        msgBox.setText("This will start a job that copies a zip file of all output/*.csv to the Galaxy History. You can download it from there once it completes.")
+        msgBox.setIcon(QMessageBox.Information)
+        msgBox.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+        returnValue = msgBox.exec()
+        if returnValue == QMessageBox.Cancel:
+            return
         fname = "all_csv.zip"
         print("download_zipped_csv_galaxy_cb():  cwd= ",os.getcwd())
         try:
@@ -1563,7 +1575,14 @@ PhysiCell Studio is provided "AS IS" without warranty of any kind. &nbsp; In no 
 
     def download_all_zipped_galaxy_cb(self):
         # fname = "/opt/pcstudio/all_output.zip"
-        self.show_info_message("This will start a job that copies a zip file of all output/* to the Galaxy History. You can download it from there once it completes. If you have a lot of output files from your simulation, it may take a while to complete, but it runs in the background and will not affect your ability to continue using the Studio.")
+        msgBox = QMessageBox()
+        msgBox.setText("This will start a job that copies a zip file of all output/* to the Galaxy History. You can download it from there once it completes. If you have a lot of output files from your simulation, it may take a while to complete, but it runs in the background and will not affect your ability to continue using the Studio.")
+        msgBox.setIcon(QMessageBox.Information)
+        msgBox.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+        returnValue = msgBox.exec()
+        if returnValue == QMessageBox.Cancel:
+            return
+
         fname = "all_output.zip"
         print("download_all_zipped_galaxy_cb():  cwd= ",os.getcwd())
         try:
