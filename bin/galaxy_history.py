@@ -1,5 +1,6 @@
 import os
 import zipfile
+import shutil
 from pathlib import Path
 from PyQt5 import QtCore, QtGui
 from PyQt5.QtWidgets import QFrame,QApplication,QWidget,QTabWidget,QFormLayout,QLineEdit, QGroupBox, QHBoxLayout,QVBoxLayout,QRadioButton,QLabel,QCheckBox,QComboBox,QScrollArea,  QMainWindow,QGridLayout, QPushButton, QFileDialog, QMessageBox, QStackedWidget, QSplitter, QScrollArea
@@ -192,7 +193,7 @@ class LoadProjectWindow(QWidget):
 
         #-------------------------------------------
         idx_row = 0
-        self.get_file_button = QPushButton("Get project.zip on History with ID=")
+        self.get_file_button = QPushButton("Get my_model.zip on History with ID=")
         self.get_file_button.setFixedWidth(230)
         self.get_file_button.setEnabled(True)
         self.get_file_button.setStyleSheet("background-color: lightgreen;")
@@ -208,7 +209,7 @@ class LoadProjectWindow(QWidget):
         #--------------------------------
 
         idx_row += 1
-        msg = "Select the ID value of a 'project.zip' on the\nGalaxy History then press the Get button above.\nThis will unzip those files into your /config directory."
+        msg = "Select the ID value of a 'my_model.zip' on the\nGalaxy History then press the Get button above.\nThis will unzip those files into your /config directory."
         # glayout.addWidget(QLabel(f"pwd: {Path.cwd()}"), idx_row,0,1,2) # w, row, column, rowspan, colspan
         glayout.addWidget(QLabel(msg), idx_row,0,1,3) # w, row, column, rowspan, colspan
 
@@ -240,8 +241,9 @@ class LoadProjectWindow(QWidget):
 
     def get_project_cb(self,sval):
         self.file_id = int(self.file_id_w.text())
-        zip_file = "project.zip"
+        zip_file = "my_model.zip"
         msgBox = QMessageBox()
+        from_filename = "/import/"   # default dir used by "get()"; our Docker container created this dir
         try:
             msgBox = QMessageBox()
             msgBox.setText(f'Copying the requested data from the Galaxy History')
@@ -249,7 +251,17 @@ class LoadProjectWindow(QWidget):
             returnValue = msgBox.exec()
             # fid = find_matching_history_ids(self.file_id)
             # get(fid)
-            get(self.file_id)   #rwh: needs to be named project.zip ?!
+            get(self.file_id)
+            from_filename += self.file_id
+            try:
+                print(f"get_project_cb(): attempting to copy {from_filename} to {zip_file}")
+                shutil.copy(from_filename, zip_file)
+            except:
+                msg = f"Error: unable to copy {from_filename} to {zip_file}"
+                print(msg)
+                msgBox.setText(msg)
+                msgBox.setStandardButtons(QMessageBox.Ok)
+                returnValue = msgBox.exec()
             # print("dummy get")
             # os.chdir("config")
             # os.chdir("..")
@@ -272,7 +284,7 @@ class LoadProjectWindow(QWidget):
             msgBox.setStandardButtons(QMessageBox.Ok)
             returnValue = msgBox.exec()
         except Exception as e:
-            msg = f'get_project_cb(): There was a problem getting or unzipping file with History ID {self.file_id}. Perhaps you got it previously.'
+            msg = f'get_project_cb(): There was a problem getting or unzipping {from_filename} with History ID {self.file_id}. Perhaps you got it previously.'
             print(msg)
             msgBox.setText(msg)
             msgBox.setStandardButtons(QMessageBox.Ok)

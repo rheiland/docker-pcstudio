@@ -1489,7 +1489,7 @@ PhysiCell Studio is provided "AS IS" without warranty of any kind. &nbsp; In no 
     #-----------------------------------------------------------------
     # functions for Galaxy
     def save_project_galaxy(self):
-        fname = "project.zip"
+        fname = "my_model.zip"
         file_str = "config/*.csv"
         file_str = os.path.join(os.getcwd(), file_str)
         print('-------- download_zipped_csv_galaxy_cb(): zip up all ',file_str)
