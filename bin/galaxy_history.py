@@ -194,7 +194,7 @@ class LoadProjectWindow(QWidget):
         #-------------------------------------------
         idx_row = 0
         self.get_file_button = QPushButton("Get my_model.zip on History with ID=")
-        self.get_file_button.setFixedWidth(230)
+        self.get_file_button.setFixedWidth(250)
         self.get_file_button.setEnabled(True)
         self.get_file_button.setStyleSheet("background-color: lightgreen;")
         self.get_file_button.clicked.connect(self.get_project_cb)
