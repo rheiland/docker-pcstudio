@@ -329,6 +329,8 @@ class SaveProjectWindow(QWidget):
         if msgBox.exec() == QMessageBox.Cancel:
             return
 
+        self.xml_creator.save_cb()
+
         file_str = os.path.join(os.getcwd(), "config/*.csv")
         # print('-------- save_project_cb(): zip up all', file_str)
         try:
