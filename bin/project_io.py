@@ -141,10 +141,13 @@ class ExportProjectWindow(QWidget):
                 # pass
                 # self.show_error_message("github_pat_str is None")
                 self.show_error_message("Your GitHub Personal Access Token is unknown.\nUse the Studio->Settings to provide it as a History ID datastore.")
+                return
             else:
                 github_pat_str = github_pat_str.rstrip("\r\n")
+
             # self.show_info_message(f"github_pat_str is {github_pat_str}. Calling upload_binary_file: repo={repo_name}, fname={fname}")
             self.upload_binary_file(github_pat_str, repo_name, fname, fname, "update project", "main")
+            self.show_info_message("If successful, your .zip project should appear in your repo soon.")
         except KeyError:
             msg = traceback.format_exc()
             self.show_error_message(msg)
@@ -492,6 +495,9 @@ class ProjectIO:
         if self.export_project_UI is None:
             self.export_project_UI = ExportProjectWindow()
             self.export_project_UI.xml_creator = self.studio
+
+        # hack to bring to foreground
+        self.export_project_UI.hide()
         self.export_project_UI.show()
         self.export_project_UI.raise_()
 
@@ -499,5 +505,6 @@ class ProjectIO:
         if self.import_project_UI is None:
             self.import_project_UI = ImportProjectWindow()
             self.import_project_UI.xml_creator = self.studio
+        self.import_project_UI.hide()
         self.import_project_UI.show()
         self.import_project_UI.raise_()
